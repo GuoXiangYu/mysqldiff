@@ -1,0 +1,16 @@
+{
+  "development": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "database": "compare_development",
+    "user": "admin",
+    "password": "123456"
+  },
+  "production": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "database": "compare_production",
+    "user": "admin",
+    "password": "123456"
+  }
+}
