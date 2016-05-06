@@ -74,10 +74,10 @@ mysqldiff.getColumnString = function (columnInfo) {
   return util.format('`%s`%s%s%s%s%s%s',
     columnInfo.COLUMN_NAME,
     columnInfo.COLUMN_TYPE,
-    _.isNull(columnInfo.CHARACTER_SET_NAME) ? " CHARACTER SET " + columnInfo.CHARACTER_SET_NAME : '',
-    _.isNull(columnInfo.COLLATION_NAME) ? " COLLATE " + columnInfo.COLLATION_NAME : '',
+    columnInfo.CHARACTER_SET_NAME ? " CHARACTER SET " + columnInfo.CHARACTER_SET_NAME : '',
+    columnInfo.COLLATION_NAME ? " COLLATE " + columnInfo.COLLATION_NAME : '',
     columnInfo.IS_NULLABLE === 'NO' ? ' NOT NULL' : '',
-    _.isNull(columnInfo.COLUMN_DEFAULT) ? ' DEFAULT ' + defaultValue : '',
+    columnInfo.COLUMN_DEFAULT ? ' DEFAULT ' + defaultValue : '',
     columnInfo.COLUMN_COMMENT ? util.format(" COMMENT '%s'", columnInfo.COLUMN_COMMENT) : ''
   );
 };
