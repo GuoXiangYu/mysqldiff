@@ -77,7 +77,7 @@ mysqldiff.getColumnString = function (columnInfo) {
     columnInfo.CHARACTER_SET_NAME ? " CHARACTER SET " + columnInfo.CHARACTER_SET_NAME : '',
     columnInfo.COLLATION_NAME ? " COLLATE " + columnInfo.COLLATION_NAME : '',
     columnInfo.IS_NULLABLE === 'NO' ? ' NOT NULL' : '',
-    columnInfo.COLUMN_DEFAULT ? ' DEFAULT ' + defaultValue : '',
+    columnInfo.COLUMN_DEFAULT !== null ? ' DEFAULT ' + defaultValue : '',
     columnInfo.COLUMN_COMMENT ? util.format(" COMMENT '%s'", columnInfo.COLUMN_COMMENT) : ''
   );
 };
@@ -190,14 +190,13 @@ mysqldiff.compareCommonTable = function (conn1, conn2, tableInfo1, tableInfo2, f
 
   // 比对表信息
   var compareTableInfo = function () {
-    var sql = util.format('%s%s%s%s',
+    var sql = util.format('%s%s%s',
       tableInfo1.ENGINE !== tableInfo2.ENGINE ? util.format(' ENGINE=`%s`', tableInfo1.ENGINE) : '',
       tableInfo1.TABLE_COLLATION !== tableInfo2.TABLE_COLLATION ? ' COLLATE ' + tableInfo1.TABLE_COLLATION : '',
-      tableInfo1.CREATE_OPTIONS !== tableInfo2.CREATE_OPTIONS ? ' ' + tableInfo1.CREATE_OPTIONS : '',
-      mysqldiff.getComment(tableInfo1.TABLE_COMMENT) !== mysqldiff.getComment(tableInfo2.TABLE_COMMENT) ?
-        util.format(" COMMENT='%s'", mysqldiff.getComment(tableInfo1.TABLE_COMMENT)) : ''
+      tableInfo1.CREATE_OPTIONS !== tableInfo2.CREATE_OPTIONS ? ' ' + tableInfo1.CREATE_OPTIONS : ''
+      //mysqldiff.getComment(tableInfo1.TABLE_COMMENT) !== mysqldiff.getComment(tableInfo2.TABLE_COMMENT) ?
+      //  util.format(" COMMENT='%s'", mysqldiff.getComment(tableInfo1.TABLE_COMMENT)) : ''
     );
-
     return _.isEmpty(sql) ? '' : util.format('ALTER TABLE `%s`.`%s` %s;', db2Name, tableName, sql);
   };
 
@@ -272,8 +271,8 @@ mysqldiff.compareCommonTable = function (conn1, conn2, tableInfo1, tableInfo2, f
       // 类型、默认值、是否为空、描述不同，则生成修改sql
       if (col1.COLUMN_TYPE !== col2.COLUMN_TYPE ||
         col1.COLUMN_DEFAULT !== col2.COLUMN_DEFAULT ||
-        col1.IS_NULLABLE !== col2.IS_NULLABLE ||
-        col1.COLUMN_COMMENT !== col2.COLUMN_COMMENT) {
+        col1.IS_NULLABLE !== col2.IS_NULLABLE) { // ||
+        //col1.COLUMN_COMMENT !== col2.COLUMN_COMMENT) {
         var str = '';
         var index = _.indexOf(columnsName1, columnName);
         if (index === 0) {
