@@ -1,6 +1,6 @@
 {
   "name": "mysqldiff",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Compares two mysql databases and save SQL commands to file.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "mysql": "^2.7.0",
+    "mysql": "^2.10.0",
     "async": "^1.3.0",
     "mkdirp": "^0.3.3",
     "lodash": "^4.6.1"
